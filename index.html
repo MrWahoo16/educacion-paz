@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog sobre educación para la paz</title>
+  <style>
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    #responseList {
+      list-style-type: none;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>¿Cómo practicarías la educación para la paz?</h1>
+  <textarea id="response" rows="4" cols="50" placeholder="Escribe tu respuesta aquí"></textarea><br>
+  <input type="text" id="userName" placeholder="Tu nombre"><br>
+  <button onclick="guardarRespuesta()">Guardar</button>
+  <h2>Respuestas guardadas:</h2>
+  <ul id="responseList"></ul>
+</div>
+
+<script>
+  // Función para guardar la respuesta y el nombre del usuario
+  function guardarRespuesta() {
+    var response = document.getElementById('response').value;
+    var userName = document.getElementById('userName').value;
+    if (response.trim() !== '' && userName.trim() !== '') {
+      var listItem = document.createElement('li');
+      listItem.textContent = userName + ': ' + response;
+      document.getElementById('responseList').appendChild(listItem);
+      // Guardar en el almacenamiento local
+      var savedResponses = JSON.parse(localStorage.getItem('responses')) || [];
+      savedResponses.push({user: userName, response: response});
+      localStorage.setItem('responses', JSON.stringify(savedResponses));
+    } else {
+      alert('Por favor, completa tanto tu nombre como tu respuesta.');
+    }
+  }
+
+  // Cargar respuestas guardadas al cargar la página
+  window.onload = function() {
+    var savedResponses = JSON.parse(localStorage.getItem('responses')) || [];
+    var responseList = document.getElementById('responseList');
+    savedResponses.forEach(function(item) {
+      var listItem = document.createElement('li');
+      listItem.textContent = item.user + ': ' + item.response;
+      responseList.appendChild(listItem);
+    });
+  };
+</script>
+
+</body>
+</html>
